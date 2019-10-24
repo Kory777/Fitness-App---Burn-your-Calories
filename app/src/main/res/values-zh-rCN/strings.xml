@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">燃烧我的卡路里</string>
+    <string name="title_settings" translatable="false">设置</string>
+    <string name="title_1" translatable="false">Cool card</string>
+    <string name="title_2" translatable="false">Ok card</string>
+    <string name="title_3" translatable="false">Bad card</string>
+    <string name="title_4" translatable="false">Ugly card</string>
+
+    <string name="title_intake" translatable="false">摄入</string>
+    <string name="text_1" translatable="false">Hello</string>
+    <string name="title_status" translatable="false">成就</string>
+</resources>

@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name" translatable="false">Burn Calories</string>
+    <string name="title_settings" translatable="false">Settings</string>
+    <string name="title_1" translatable="false">卡</string>
+    <string name="title_2" translatable="false">卡</string>
+    <string name="title_3" translatable="false">卡</string>
+    <string name="title_4" translatable="false">卡</string>
+
+    <string name="title_intake" translatable="false">Intake</string>
+    <string name="text_1" translatable="false">哈哈哈哈哈</string>
+    <string name="title_status" translatable="false">status</string>
+
+</resources>
