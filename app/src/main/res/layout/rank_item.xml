@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_height="70dp">
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/portrait"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:riv_border_color="#333333"
+        app:riv_border_width="2dp"
+        android:src="@drawable/dog"
+        app:riv_oval="true"/>
+    <TextView
+        android:id="@+id/name"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="30dp"
+        android:text="Kory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/data"
+        android:textSize="28dp"
+        android:text="666"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"/>
+
+
+
+
+</android.widget.LinearLayout>

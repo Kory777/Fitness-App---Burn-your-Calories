@@ -2,15 +2,50 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.burncalories">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activity.RankActivity"></activity>
+        <activity android:name=".activity.LoginActivity" />
+
+        <service
+            android:name=".Map.LocationService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".activity.SetBodyDataActivity" />
+        <activity android:name=".activity.SetPlanActivity" />
+        <activity android:name=".activity.SettingActivity" />
+
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="ce04dc2e6b70b9298c255717afd1aa7a" />
+
+        <activity android:name=".Map.RecordShowActivity" />
+        <activity android:name=".Map.RecordActivity" />
+        <activity android:name=".Map.MapMainActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,6 +53,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name="com.amap.api.location.APSService" />
     </application>
 
 </manifest>

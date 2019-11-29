@@ -3,6 +3,7 @@ package com.example.burncalories.view;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
     private List<CardView> mViews;
     private List<CardItem> mData;
     private float mBaseElevation;
+    private StepArcView mArcView;
 
     public CardPagerAdapter() {
         mData = new ArrayList<>();
@@ -35,6 +37,7 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
 
     @Override
     public CardView getCardViewAt(int position) {
+
         return mViews.get(position);
     }
 
@@ -48,17 +51,20 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
         return view == o;
     }
 
+
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         View view = LayoutInflater.from(container.getContext())
                 .inflate(R.layout.adapter, container, false);
         container.addView(view);
-        bind(mData.get(position), view);
+        CardItem item = mData.get(position);
+        bind(item, view);
         CardView cardView = (CardView) view.findViewById(R.id.cardView);
-        StepArcView mArcView;
         mArcView = (StepArcView) cardView.findViewById(R.id.arcView);
-        mArcView.setTextSize(30);
-        mArcView.setCurrentCount(1000,400);
+        mArcView.setText(item.getViewText());
+        mArcView.setTextSize(25);
+        //Bug
+        mArcView.setCurrentCount(Math.round((float)item.getComplete()), Math.round((float)item.getCurrent()));
 
         if (mBaseElevation == 0) {
             mBaseElevation = cardView.getCardElevation();
@@ -82,4 +88,10 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
         contentTextView.setText(item.getText());
     }
 
+
+    //实现刷新
+    @Override
+    public int getItemPosition(@NonNull Object object) {
+        return POSITION_NONE;
+    }
 }

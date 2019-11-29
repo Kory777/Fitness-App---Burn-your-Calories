@@ -43,6 +43,8 @@ public class StepArcView extends View {
      */
     private int animationLength = 3000;
 
+    private String text;
+
     public StepArcView(Context context) {
         super(context);
     }
@@ -146,7 +148,7 @@ public class StepArcView extends View {
         vTextPaint.setTextAlign(Paint.Align.CENTER);
         vTextPaint.setAntiAlias(true);//抗锯齿功能
         vTextPaint.setColor(getResources().getColor(R.color.grey));
-        String stepString = "步数";
+        String stepString = text;
         Rect bounds = new Rect();
         vTextPaint.getTextBounds(stepString, 0, stepString.length(), bounds);
         canvas.drawText(stepString, centerX, getHeight() / 2 + bounds.height() + getFontHeight(numberTextSize), vTextPaint);
@@ -248,4 +250,7 @@ public class StepArcView extends View {
         return (int) (dip * density + 0.5f * (dip >= 0 ? 1 : -1));
     }
 
+    public void setText(String text) {
+        this.text = text;
+    }
 }

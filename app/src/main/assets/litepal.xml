@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+    <dbname value="databases"></dbname>
+    <version value="22"></version>
+
+    <list>
+        <mapping class="com.example.burncalories.step.StepData"></mapping>
+        <mapping class="com.example.burncalories.Account"></mapping>
+        <mapping class="com.example.burncalories.DayDistance"></mapping>
+        <mapping class="com.example.burncalories.DayStep"></mapping>
+    </list>
+</litepal>

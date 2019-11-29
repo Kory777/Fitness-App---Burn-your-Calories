@@ -9,7 +9,13 @@
     <item
         android:id="@+id/navigation_dashboard"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/title_intake" />
+        android:title="@string/title_status" />
+
+    <item
+        android:id="@+id/navigation_friends"
+        android:icon="@drawable/friends"
+        android:title="Friends"
+        />
 
     <item
         android:id="@+id/navigation_notifications"

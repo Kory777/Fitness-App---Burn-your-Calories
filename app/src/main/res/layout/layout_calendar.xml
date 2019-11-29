@@ -1,0 +1,21 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_calendar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.loonggg.weekcalendar.view.WeekCalendar
+        android:id="@+id/week_calendar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingBottom="10dp"
+        app:daysSelectedBackground="@drawable/green_oval_bg"
+        app:todayTextColor="@color/gold"
+        app:hideTodayName="false"
+        app:isCornerMark="true"
+        app:monthBackgroundColor="#8F83F1"
+        app:nextArrowBg="@drawable/rightarrow"
+        app:preArrowBg="@drawable/leftarrow"/>
+
+
+</RelativeLayout>

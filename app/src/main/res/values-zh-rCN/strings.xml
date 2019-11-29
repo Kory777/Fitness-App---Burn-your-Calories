@@ -2,12 +2,23 @@
 <resources>
     <string name="app_name" translatable="false">燃烧我的卡路里</string>
     <string name="title_settings" translatable="false">设置</string>
-    <string name="title_1" translatable="false">Cool card</string>
-    <string name="title_2" translatable="false">Ok card</string>
-    <string name="title_3" translatable="false">Bad card</string>
-    <string name="title_4" translatable="false">Ugly card</string>
+    <string name="cal" translatable="false">卡</string>
+    <string name="running_distance" translatable="false">跑步距离</string>
+    <string name="cal_intake" translatable="false">卡路里摄入</string>
 
     <string name="title_intake" translatable="false">摄入</string>
-    <string name="text_1" translatable="false">Hello</string>
+    <string name="step" translatable="false">步数</string>
     <string name="title_status" translatable="false">成就</string>
+    <string name="body_data">身体数据</string>
+    <string name="exercise_data">运动数据</string>
+    <string name="weight">体重</string>
+    <string name="plan">计划</string>
+    <string name="plan_intake">计划摄入</string>
+    <string name="plan_step">计划步数</string>
+    <string name="plan_distance">跑步距离</string>
+    <string name="title_4">好极了！</string>
+    <string name="height">身高</string>
+    <string name="distance">Distance</string>
+    <string name="time">Time</string>
+    <string name="speed">Speed</string>
 </resources>
