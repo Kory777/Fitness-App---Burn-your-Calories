@@ -11,6 +11,7 @@ import org.litepal.LitePalApplication;
 
 public class MyApplication extends LitePalApplication {
 
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -23,4 +24,5 @@ public class MyApplication extends LitePalApplication {
         super.onCreate();
         LitePal.initialize(this);
     }
+
 }

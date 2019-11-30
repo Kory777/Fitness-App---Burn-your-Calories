@@ -1,7 +1,10 @@
 package com.example.burncalories.step;
 
 import android.annotation.TargetApi;
+import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -11,6 +14,7 @@ import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.burncalories.MyApplication;
 import com.example.burncalories.activity.MainActivity;
 import com.example.burncalories.utils.Util;
 
@@ -22,7 +26,6 @@ import java.util.Observer;
 
 public class StepCounterManager implements SensorEventListener {
     private static final int STEP_SENSOR = Sensor.TYPE_STEP_COUNTER;
-    private static final int STEP_DETECTOR = Sensor.TYPE_STEP_DETECTOR;
 
     private static StepCounterManager instance;
 
@@ -33,6 +36,8 @@ public class StepCounterManager implements SensorEventListener {
     private StepCounterObservable mStepCounterObservable;
     private static String CURRENT_DATE = "";
     private float currentStep = 0.0f;
+    private int lastStep = 0;
+    SharedPreferences sp;
     /**
      * 上一次的步数
      */
@@ -49,7 +54,6 @@ public class StepCounterManager implements SensorEventListener {
     private StepCounterManager(){
         mSensorManager = (SensorManager)GlobalConfig.getAppContext().getSystemService(Context.SENSOR_SERVICE);
 
-        hasRecord = true;
         if(mSensorManager == null){
             Log.e(TAG, "StepCounterManager init error");
             return;
@@ -102,7 +106,27 @@ public class StepCounterManager implements SensorEventListener {
 
         Log.i(TAG, "芯片信息 : " + info);
 
-        mSensorManager.registerListener(this, mStepCount, SensorManager.SENSOR_DELAY_FASTEST);
+        mSensorManager.registerListener(this, mStepCount, SensorManager.SENSOR_DELAY_UI);
+        sp = MyApplication.getContext().getSharedPreferences("Step",Context.MODE_PRIVATE);
+        lastStep = sp.getInt("lastStep", 0);
+
+         new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                while (true) {
+                    try {
+                        save();
+                        Thread.sleep(5 * 1000);
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.putInt("lastStep", lastStep);
+                        editor.apply();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }.start();
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -112,7 +136,7 @@ public class StepCounterManager implements SensorEventListener {
 
     public void unRegister() {
         mSensorManager.unregisterListener(this);
-        save();
+
     }
 
     public void addStepCounterObserver(Observer observer) {
@@ -137,6 +161,11 @@ public class StepCounterManager implements SensorEventListener {
         if (!hasRecord) {
             hasRecord = true;
             hasStepCount = tempStep;
+            //Add when the app is dead;
+            if(tempStep >= lastStep && lastStep != 0) {
+                currentStep += tempStep - lastStep;
+                Log.e("LastStep2", "  "+ lastStep);
+            }
         } else {
             //获取APP打开到现在的总步数=本次系统回调的总步数-APP打开之前已有的步数
             int thisStepCount = tempStep - hasStepCount;
@@ -152,6 +181,8 @@ public class StepCounterManager implements SensorEventListener {
         if (mCallback != null) {
             mCallback.updateUi((int) currentStep);
         }
+
+        lastStep = tempStep;
 
         //event.values[0] is the data from sensor
         setStepCount(event.values[0]);

@@ -32,7 +32,7 @@ public class DbAdapter {
     private final static String DATABASE_PATH = android.os.Environment
             .getExternalStorageDirectory().getAbsolutePath() + "/recordPath";
     static final String DATABASE_NAME = DATABASE_PATH + "/" + "database.db";
-    private static final int DATABASE_VERSION = 22;
+    private static final int DATABASE_VERSION = 24;
     private static final String RECORD_TABLE = "record";
     private static final String RECORD_CREATE = "create table if not exists record("
             + KEY_ROWID

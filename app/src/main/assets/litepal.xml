@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <litepal>
     <dbname value="databases"></dbname>
-    <version value="22"></version>
+    <version value="24"></version>
 
     <list>
         <mapping class="com.example.burncalories.step.StepData"></mapping>

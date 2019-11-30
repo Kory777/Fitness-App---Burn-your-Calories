@@ -41,7 +41,7 @@ public class CloudDbHelper {
     private static final int UPDATE_MODE = 7777;
     private static final int ERROR_MODE = 4444;
 
-    private Map<String, String> accounts;
+    private Map<String, String> accountNames;
     private List<DayStep> steps;
     private List<DayDistance> distances;
 
@@ -200,9 +200,9 @@ public class CloudDbHelper {
         return headshot;
     }
 
-    public Map<String, String> queryAccounts(){
+    public Map<String, String> queryAccountNames(){
 
-        accounts = new HashMap<String, String>();
+        accountNames = new HashMap<String, String>();
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -219,14 +219,14 @@ public class CloudDbHelper {
             while (rs.next()) { // 判断是否还有下一个数据
                 String accountName = rs.getString("account_name");
                 String accountPassword = rs.getString("account_password");
-                accounts.put(accountName, accountPassword);
+                accountNames.put(accountName, accountPassword);
             }
             conn.close();   //关闭数据库连接
         } catch (SQLException e) {
             e.printStackTrace();
             Log.e(TAG, "远程连接失败");
         }
-        return accounts;
+        return accountNames;
     }
 
     public List<DayStep> queryUserStepByDate(String date){
@@ -257,6 +257,46 @@ public class CloudDbHelper {
         }
         return steps;
 
+    }
+
+    public List<Account> queryAccounts(){
+        List<Account> accounts = new ArrayList();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Log.v(TAG, "加载JDBC驱动成功");
+        } catch (ClassNotFoundException e) {
+            Log.e(TAG, "加载JDBC驱动失败");
+        }
+        try {
+            conn = DriverManager.getConnection(URL, USER, PASSWORD);
+            String sql = "select * from " + ACCOUNT_TABLE;     // 查询数据的sql语句
+            st = conn.createStatement(); //创建用于执行静态sql语句的Statement对象，st属局部变量
+            ResultSet rs = st.executeQuery(sql);    //执行sql查询语句，返回查询数据的结果集
+            System.out.println("最后的查询结果为：");
+            while (rs.next()) { // 判断是否还有下一个数据
+                String accountName = rs.getString("account_name");
+                Account account = new Account(accountName);
+                Blob b = rs.getBlob("headshot");
+                if(b == null){
+                    Log.e(TAG,"云数据库内的图片是空的");
+                }else {
+                    Log.e(TAG,"云数据库加载成功");
+                    InputStream is = b.getBinaryStream();
+                    byte[] headshot = new byte[is.available()];
+                    is.read(headshot);
+                    account.setHeadshot(headshot);
+                }
+                accounts.add(account);
+            }
+            conn.close();   //关闭数据库连接
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Log.e(TAG, "远程连接失败");
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e(TAG, "文件读写失败");
+        }
+        return accounts;
     }
 
     public List<DayDistance> queryUserDitanceByDate(String date){

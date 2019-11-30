@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
             public void run() {
                 super.run();
                 CloudDbHelper cdbHelper = new CloudDbHelper();
-                accounts = cdbHelper.queryAccounts();
+                accounts = cdbHelper.queryAccountNames();
             }
         }.start();
 

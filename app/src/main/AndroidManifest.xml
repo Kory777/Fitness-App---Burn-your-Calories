@@ -32,6 +32,9 @@
             android:name=".Map.LocationService"
             android:enabled="true"
             android:exported="true" />
+        <service android:name=".step.StepService"
+            android:enabled="true"
+            android:exported="true"/>
 
         <activity android:name=".activity.SetBodyDataActivity" />
         <activity android:name=".activity.SetPlanActivity" />

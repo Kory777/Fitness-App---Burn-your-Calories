@@ -85,18 +85,21 @@ public class SettingActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
+                case R.id.navigation_running:
                     Intent intent1 = new Intent(SettingActivity.this, MapMainActivity.class);
                     startActivity(intent1);
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.navigation_status:
                     Intent intent2 = new Intent(SettingActivity.this, MainActivity.class);
                     startActivity(intent2);
-                    return true;
-                case R.id.navigation_notifications:
+                    return false;
+                case R.id.navigation_setting:
                     return true;
                 case R.id.navigation_friends:
-                    return true;
+                    Intent intent = new Intent(SettingActivity.this, RankActivity.class);
+                    startActivity(intent);
+                    finish();
+                    return false;
             }
             return false;
         }
@@ -115,6 +118,7 @@ public class SettingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setting);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setSelectedItemId(navigation.getMenu().getItem(3).getItemId());
 
         bodyDataCard = findViewById(R.id.bodyData);
         planCard = findViewById(R.id.plan);
@@ -216,7 +220,7 @@ public class SettingActivity extends AppCompatActivity {
             public void run() {
                 super.run();
                 CloudDbHelper cdbHelper = new CloudDbHelper();
-                Map<String, String> map = cdbHelper.queryAccounts();
+                Map<String, String> map = cdbHelper.queryAccountNames();
                 for(String value: map.values()){
                     System.out.println(value);
                 }

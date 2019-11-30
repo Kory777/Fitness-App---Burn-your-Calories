@@ -44,6 +44,7 @@ import com.amap.api.trace.TraceLocation;
 import com.amap.api.trace.TraceOverlay;
 import com.example.burncalories.R;
 import com.example.burncalories.activity.MainActivity;
+import com.example.burncalories.activity.RankActivity;
 import com.example.burncalories.activity.SettingActivity;
 import com.example.burncalories.utils.Util;
 
@@ -114,16 +115,20 @@ public class MapMainActivity extends Activity implements LocationSource,
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
+                case R.id.navigation_running:
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.navigation_status:
                     Intent intent2 = new Intent(MapMainActivity.this, MainActivity.class);
                     startActivity(intent2);
-                    return true;
-                case R.id.navigation_notifications:
+                    return false;
+                case R.id.navigation_setting:
                     Intent intent1 = new Intent(MapMainActivity.this, SettingActivity.class);
                     startActivity(intent1);
-                    return true;
+                    return false;
+                case R.id.navigation_friends:
+                    Intent intent3 = new Intent(MapMainActivity.this, RankActivity.class);
+                    startActivity(intent3);
+                    return false;
             }
             return false;
         }

@@ -6,6 +6,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -156,6 +157,7 @@ public class RankPagerAdapter extends PagerAdapter implements CardAdapter {
         public void onBindViewHolder(@NonNull AccountAdapter.ViewHolder viewHolder, int i) {
             AccountData accountData = mAccountDataList.get(i);
             viewHolder.name.setText(accountData.getName());
+            Log.e("RankPagerAdapter", accountData.getName());
             viewHolder.headshot.setImageBitmap(accountData.getImage());
             viewHolder.data.setText(String.valueOf(accountData.getData()));
         }

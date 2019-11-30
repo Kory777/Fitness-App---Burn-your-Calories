@@ -1,12 +1,15 @@
 package com.example.burncalories.utils;
 
+import android.content.Context;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.ListIterator;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.maps.model.LatLng;
@@ -18,6 +21,8 @@ import com.example.burncalories.DayStep;
 import org.litepal.crud.DataSupport;
 
 public class Util {
+
+    public static Toast toast = null;
     /**
      * 将AMapLocation List 转为TraceLocation list
      *
@@ -176,18 +181,45 @@ public class Util {
     }
 
 
-    public static List<String> getExistAccountNames(){
-        List<Account> accounts = DataSupport.findAll(Account.class);
-        List<String> accountNames = new ArrayList();
-        for(Account account: accounts){
-            accountNames.add(account.getName());
-        }
-        return accountNames;
-    }
+//    public static List<String> getExistAccountNames(){
+//        List<Account> accounts = DataSupport.findAll(Account.class);
+//        List<String> accountNames = new ArrayList();
+//        for(Account account: accounts){
+//            accountNames.add(account.getName());
+//        }
+//        return accountNames;
+//    }
 
     public static List<Account> getExistAccounts(){
-        List<Account> accounts = DataSupport.findAll(Account.class);
+        List<Account> accounts = DataSupport.where("name <> ?", "").find(Account.class);
+        ListIterator<Account> iterator = accounts.listIterator();
+        while(iterator.hasNext()){
+            Account account = iterator.next();
+            if(account.getHeadshot()==null){
+                iterator.remove();
+            }
+        }
         return accounts;
+    }
+
+    public static void loadAccountsFromCloud(){
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                CloudDbHelper cloudDbHelper = new CloudDbHelper();
+                List<Account> accounts = cloudDbHelper.queryAccounts();
+                Log.e(TAG, "LoadAccountSuccessfully");
+                for(Account account: accounts){
+
+                    if(DataSupport.where("name = ?", account.getName()).findFirst(Account.class)==null){
+                        account.save();
+                    }else {
+                        account.updateAll("name = ?", account.getName());
+                    }
+                }
+            }
+        }.start();
     }
 
     /**
@@ -216,6 +248,22 @@ public class Util {
                 }
             }
         }.start();
+    }
+
+    public static void showToast(Context context, String text, boolean isLongLength) {
+        int length;
+        if (isLongLength) {
+            length = Toast.LENGTH_LONG;
+        } else {
+            length = Toast.LENGTH_SHORT;
+        }
+        if (toast == null) {
+            toast = Toast.makeText(context, text, length);
+        } else {
+            toast.setText(text);
+            toast.setDuration(length);
+        }
+        toast.show();
     }
 
 }

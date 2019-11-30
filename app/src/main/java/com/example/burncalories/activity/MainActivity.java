@@ -25,6 +25,8 @@ import com.example.burncalories.Map.PathRecord;
 import com.example.burncalories.R;
 import com.example.burncalories.step.StepCounterManager;
 import com.example.burncalories.step.StepData;
+import com.example.burncalories.step.StepDetectorManager;
+import com.example.burncalories.step.StepService;
 import com.example.burncalories.step.UpdateUiCallBack;
 import com.example.burncalories.utils.CloudDbHelper;
 import com.example.burncalories.utils.Util;
@@ -79,24 +81,25 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
+                case R.id.navigation_running:
                     Intent intent = new Intent(MainActivity.this, MapMainActivity.class);
                     startActivity(intent);
                     finish();
                     mTextMessage.setText(R.string.title_intake);
-                    return true;
-                case R.id.navigation_dashboard:
+                    return false;
+                case R.id.navigation_status:
                     mTextMessage.setText(R.string.title_status);
                     return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_setting:
                     Intent intent3 = new Intent(MainActivity.this, SettingActivity.class);
                     startActivity(intent3);
                     mTextMessage.setText(R.string.title_settings);
                     finish();
-                    return true;
+                    return false;
                 case R.id.navigation_friends:
                     Intent intent1 = new Intent(MainActivity.this, RankActivity.class);
                     startActivity(intent1);
+                    return false;
             }
             return false;
         }
@@ -139,6 +142,8 @@ public class MainActivity extends AppCompatActivity {
         mTextMessage = (TextView) findViewById(R.id.textView);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setSelectedItemId(navigation.getMenu().getItem(1).getItemId());
+
 
         sp  = getSharedPreferences("BodyData", MODE_PRIVATE);
         float planIntake = sp.getFloat("planIntake", 0.0f);
@@ -203,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        Util.loadAccountsFromCloud();
         init();
 
     }
@@ -216,6 +222,7 @@ public class MainActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void register() {
+        StepCounterManager.getInstance().register();
         StepCounterManager.getInstance().addStepCounterObserver(new Observer() {
             @Override
             public void update(Observable o, Object arg) {
@@ -224,7 +231,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        StepCounterManager.getInstance().register();
         StepCounterManager.getInstance().registerCallback(new UpdateUiCallBack() {
 
             @Override
@@ -237,6 +243,17 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+        StepDetectorManager.getInstance().register();
+        StepDetectorManager.getInstance().registerCallback(new UpdateUiCallBack() {
+            @Override
+            public void updateUi(int stepCount) {
+                Util.showToast(MainActivity.this, "Step has been recorded", false);
+            }
+        });
+        if(StepService.isAlive()) {
+            Intent intent = new Intent(this, StepService.class);
+            stopService(intent);
+        }
 
     }
 
@@ -246,6 +263,8 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         StepCounterManager.getInstance().clearStepObserver();
         StepCounterManager.getInstance().unRegister();
+        Intent intent = new Intent(this, StepService.class);
+        startService(intent);
     }
 
     @Override
@@ -320,6 +339,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }.start();
     }
+
 
 
 }

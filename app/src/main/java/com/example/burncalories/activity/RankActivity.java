@@ -46,18 +46,22 @@ public class RankActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
+                case R.id.navigation_status:
                     Intent intent = new Intent(RankActivity.this, MapMainActivity.class);
                     startActivity(intent);
                     finish();
+                    return false;
+                case R.id.navigation_friends:
                     return true;
-                case R.id.navigation_dashboard:
-                    return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_setting:
                     Intent intent3 = new Intent(RankActivity.this, SettingActivity.class);
                     startActivity(intent3);
                     finish();
-                    return true;
+                    return false;
+                case R.id.navigation_running:
+                    Intent intent1 = new Intent(RankActivity.this, MapMainActivity.class);
+                    finish();
+                    return false;
             }
             return false;
         }
@@ -93,6 +97,7 @@ public class RankActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setSelectedItemId(navigation.getMenu().getItem(2).getItemId());
 
     }
 
@@ -102,18 +107,18 @@ public class RankActivity extends AppCompatActivity {
         distanceDataList = new ArrayList<>();
         for(Account account: accounts){
             int step = 0, distance = 0;
-            if(!DataSupport.where("date = ? and name = ?", date, account.getName()).find(DayDistance.class).isEmpty()) {
-                distance = DataSupport.where("date = ? and name = ?", date, account.getName()).find(DayDistance.class).get(0).getDistance();
-            }
-            if(!DataSupport.where("date = ? and name = ?", date, account.getName()).find(DayStep.class).isEmpty()){
-                step = DataSupport.where("date = ? and name = ?", date, account.getName()).find(DayStep.class).get(0).getStep();
-            }
-            //目前的头像均统一
-            AccountData stepData = new AccountData(account.getName(),account.getHeadshot() ,step);
-            AccountData distanceData = new AccountData(account.getName(),account.getHeadshot(),distance);
+                if(!DataSupport.where("date = ? and name = ?", date, account.getName()).find(DayDistance.class).isEmpty()) {
+                    distance = DataSupport.where("date = ? and name = ?", date, account.getName()).find(DayDistance.class).get(0).getDistance();
+                }
+                if(!DataSupport.where("date = ? and name = ?", date, account.getName()).find(DayStep.class).isEmpty()){
+                    step = DataSupport.where("date = ? and name = ?", date, account.getName()).find(DayStep.class).get(0).getStep();
+                }
+                //目前的头像均统一
+                AccountData stepData = new AccountData(account.getName(),account.getHeadshot() ,step);
+                AccountData distanceData = new AccountData(account.getName(),account.getHeadshot(),distance);
 
-            stepDataList.add(stepData);
-            distanceDataList.add(distanceData);
+                stepDataList.add(stepData);
+                distanceDataList.add(distanceData);
         }
         rankStep.setData(stepDataList);
         rankDistance.setData(distanceDataList);
